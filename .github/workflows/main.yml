@@ -46,7 +46,7 @@ jobs:
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: firmwares
-          source_folder: ./.pio/build/esp32dev/firmware_*.bin
+          source_folder: ./.pio/build/esp32dev/firmware*.bin
 
       # - name: Deploy Version File to Azure Blob Storage
       #   uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
