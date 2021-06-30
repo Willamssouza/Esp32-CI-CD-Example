@@ -39,14 +39,14 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
         with:         
-          path: ./.pio/build/esp32dev/firmware_**.bin
+          path: ./.pio/build/esp32dev/firmware_*.bin
                 
       - name: Deploy Firmware to Azure Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: firmwares
-          source_folder: ./.pio/build/esp32dev/firmware_**.bin
+          source_folder: ./.pio/build/esp32dev/firmware_*.bin
 
       - name: Deploy Version File to Azure Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
