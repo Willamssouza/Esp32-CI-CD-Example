@@ -40,10 +40,12 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:         
           path: ./.pio/build/esp32dev/firmware.bin
-          
-      - name: Azure Blob Storage Upload
-        uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+                
+      - name: Azure Blob Upload          
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         with:
+          # Azure Storage ConnectionString for the container (Azure Portal - select Storage Account - Access Keys blade).
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          # Blob Container name (e.g. my-container).
           container_name: firmwares
-          source_dir: ./.pio/build/esp32dev/firmware.bin
+          source_folder: ./.pio/build/esp32dev/firmware.bin
