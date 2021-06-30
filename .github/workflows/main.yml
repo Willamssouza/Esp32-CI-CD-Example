@@ -60,3 +60,9 @@ jobs:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: firmwares
           source_folder: .pio/build/esp32dev/last_version.txt
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: v${{ steps.getversion.outputs.version }}
+          prerelease: false
