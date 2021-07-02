@@ -36,7 +36,7 @@ jobs:
       - name: Run platformIO
         run: |
           platformio run
-          platformio run -t uploadfs
+          platformio run --target buildfs
       
       - name: Read Version File
         id: getversion
