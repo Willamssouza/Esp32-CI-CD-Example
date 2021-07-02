@@ -100,7 +100,7 @@ void loop()
 {
   long now = millis();
 
-  if (now >= last_update + UPDATE_FIRMWARE_INTERVAL)
+  if (now >= last_update + (UPDATE_FIRMWARE_INTERVAL * 1000 * 60))
   {
     last_update = now;
     updateFirmware();
