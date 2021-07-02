@@ -100,9 +100,9 @@ void loop()
 {
   long now = millis();
 
-  if (now >= last_update + 30000)
+  if (now >= last_update + UPDATE_FIRMWARE_INTERVAL)
   {
-    last_update += now;
+    last_update = now;
     updateFirmware();
   }
 }
