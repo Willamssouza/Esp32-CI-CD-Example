@@ -34,7 +34,9 @@ jobs:
           pip install platformio
         
       - name: Run platformIO
-        run: platformio run
+        run: |
+          platformio run
+          platformio run -t uploadfs
       
       - name: Read Version File
         id: getversion
@@ -45,6 +47,7 @@ jobs:
         with:         
           path: |
             .pio/build/esp32dev/*.bin
+            .pio/build/esp32dev/spiffs.bin
             .pio/build/esp32dev/last_version.txt
                 
       - name: Deploy Firmware to Azure Blob Storage
@@ -52,7 +55,14 @@ jobs:
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: firmwares
-          source_folder: .pio/build/esp32dev/firmware_${{ steps.getversion.outputs.version }}.bin            
+          source_folder: .pio/build/esp32dev/firmware_${{ steps.getversion.outputs.version }}.bin  
+      
+      - name: Deploy SPIFFS to Azure Blob Storage
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: firmwares
+          source_folder: .pio/build/esp32dev/spiffs.bin  
 
       - name: Deploy Version to Azure Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0

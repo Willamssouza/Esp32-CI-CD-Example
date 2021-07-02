@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <HTTPUpdate.h>
-#include <Ticker.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
@@ -47,26 +46,39 @@ void updateFirmware()
   {
     log_v("Trying update firmware");
 
-    // WiFiClient client;
     WiFiClientSecure client;
     client.setCACert(rootCACertificate);
     client.setTimeout(12000 / 1000);
 
-    t_httpUpdate_return ret = httpUpdate.update(client, FIRMWARE_URL, FIRMWARE_VERSION);
+    t_httpUpdate_return ret = httpUpdate.updateSpiffs(client, SPIFSS_URL, FIRMWARE_VERSION);
 
-    switch (ret)
+    if (ret == HTTP_UPDATE_OK)
     {
-    case HTTP_UPDATE_FAILED:
-      log_v("Update failed. Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
-      break;
 
-    case HTTP_UPDATE_NO_UPDATES:
+      t_httpUpdate_return ret = httpUpdate.update(client, FIRMWARE_URL, FIRMWARE_VERSION);
+
+      switch (ret)
+      {
+      case HTTP_UPDATE_FAILED:
+        log_v("Update firmware failed.");
+        break;
+
+      case HTTP_UPDATE_NO_UPDATES:
+        log_v("No update available");
+        break;
+
+      case HTTP_UPDATE_OK:
+        log_v("Updated successfully");
+        break;
+      }
+    }
+    else if (ret == HTTP_UPDATE_NO_UPDATES)
+    {
       log_v("No update available");
-      break;
-
-    case HTTP_UPDATE_OK:
-      log_v("Updated successfully");
-      break;
+    }
+    else
+    {
+      log_v("Update spiffs failed.");
     }
   }
 }
